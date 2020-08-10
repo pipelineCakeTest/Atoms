@@ -60,14 +60,10 @@ jobs:
         if: ${{!contains( matrix.run-on, 'self-hosted' )}}
         uses: actions/setup-python@v2
         continue-on-error: true
-      - name: Config Conan
-        run: |
-          conan remote add conan_local http://127.0.0.1:8040/artifactory/api/conan/conan-releases -i 0 -f
-          conan user -p password123 -r conan_local admin
-        continue-on-error: true
+      - name: Conan Config
+        run: conan config install https://www.cip.audi.de/bitbucket/projects/CORTEX/repos/aev25_conan_settings_external.git
       - name: get-cmake
         uses: lukka/get-cmake@v3.18.0
-        continue-on-error: true
       - name: Checkout
         uses: actions/checkout@v2.3.1
       - name: Build
