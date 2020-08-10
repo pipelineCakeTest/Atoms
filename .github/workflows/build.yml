@@ -61,7 +61,7 @@ jobs:
         uses: actions/setup-python@v2
         continue-on-error: true
       - name: Conan Config
-        run: conan config install https://www.cip.audi.de/bitbucket/projects/CORTEX/repos/aev25_conan_settings_external.git
+        run: conan config install --verify-ssl=False https://cip.web.audi.vwg/bitbucket/scm/cortex/aev25_conan_settings.git
       - name: get-cmake
         uses: lukka/get-cmake@v3.18.0
       - name: Checkout
