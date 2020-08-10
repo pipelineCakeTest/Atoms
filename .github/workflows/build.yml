@@ -60,6 +60,11 @@ jobs:
         if: ${{!contains( matrix.run-on, 'self-hosted' )}}
         uses: actions/setup-python@v2
         continue-on-error: true
+      - name: Set proxy
+        env:
+          CIP_USER: ${{ secrets.CIP_USER }}
+          CIP_PWD: ${{ secrets.CIP_PASSWORD }}
+        run: "git config --global http.proxy=http://$env:CIP_USER:$env:CIP_PWD@proxy.in.audi.vwg:8080"
       - name: Conan Config
         run: conan config install --verify-ssl=False https://cip.web.audi.vwg/bitbucket/scm/cortex/aev25_conan_settings.git
       - name: get-cmake
