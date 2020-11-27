@@ -54,7 +54,7 @@ jobs:
         env:
           CIP_USER: ${{ secrets.CIP_USER }}
           CIP_PWD: ${{ secrets.CIP_PASSWORD }}
-        run: "pip install conan --proxy=http://$env:CIP_USER:$env:CIP_PWD@proxy.in.audi.vwg:8080"
+        run: "pip install conan --proxy=http://${{ secrets.CIP_USER }}:${{ secrets.CIP_PASSWORD }}@proxy.in.audi.vwg:8080"
         continue-on-error: true
       - name: Setup Python
         if: ${{!contains( matrix.run-on, 'self-hosted' )}}
