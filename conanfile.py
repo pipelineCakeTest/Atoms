@@ -17,7 +17,7 @@ class AtomsConan(ConanFile):
         # This small hack might be useful to guarantee proper /MT /MD linkage
         # in MSVC if the packaged project doesn't have variables to set it
         # properly
-        tools.replace_in_file("hello/CMakeLists.txt", "PROJECT(HelloWorld)",
+        tools.replace_in_file(".hello/CMakeLists.txt", "PROJECT(HelloWorld)",
                               '''PROJECT(HelloWorld)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
@@ -30,11 +30,11 @@ conan_basic_setup()''')
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="hello")
+        cmake.configure(source_folder=".hello")
         cmake.build()
 
     def package(self):
-        self.copy("*.h", dst="include", src="hello")
+        self.copy("*.h", dst="include", src=".hello")
         self.copy("*hello.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
