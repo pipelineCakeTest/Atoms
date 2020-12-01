@@ -49,6 +49,8 @@ jobs:
         run: echo "::add-mask::password123"
       - name: Debug Message
         run: echo "::debug::Create a secret ACTIONS_STEP_DEBUG=true, to enable debuging"
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
       - name: Set proxy
         run: "git config --global http.proxy http://${{ secrets.CIP_USER }}:${{ secrets.CIP_PASSWORD }}@proxy.in.audi.vwg:8080"
       - name: Install Conan Local Machine
@@ -70,8 +72,6 @@ jobs:
       - name: get-cmake
         uses: lukka/get-cmake@v3.18.0
         continue-on-error: true
-      - name: Checkout
-        uses: actions/checkout@v2.3.1
       - name: Build
         run: |
           echo "$env:JOB_NAME #$env:BUILD_NUMBER"
