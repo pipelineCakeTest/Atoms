@@ -47,8 +47,6 @@ jobs:
     steps:
       - name: Conan Config
         run: |
-          conan remote add conan_local http://127.0.0.1:8040/artifactory/api/conan/conan-releases -i 0 -f
-          conan user -p password123 -r conan_local admin
           conan config set storage.download_cache=${{ github.workspace }}
       - name: Build
         run: |
