@@ -12,8 +12,5 @@ class AtomsConan(ConanFile):
     default_options = {"shared": False}
     generators = "cmake"
 
-    def build_requirements(self):
-        self.build_requires('Water/0.1.0@aev25/stable')
-
     
 
