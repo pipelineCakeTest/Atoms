@@ -43,6 +43,16 @@ jobs:
       - name: Build info
         run: |
           conan_build_info $CONAN_TRACE_FILE --output ./build_info.json
+          python -m """import json
+          with open('build_info.json', 'r+') as f:
+              data = json.load(f)
+              data['name'] = 'Atoms'
+              data['number'] = '1'
+              data['started'] = '2021-02-07T01:37:46.337+08:00'
+              f.seek(0)
+              json.dump(data, f, indent=4)
+              f.truncate()
+          """
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
