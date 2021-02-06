@@ -1,53 +1,22 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
-  workflow_dispatch:
-  push:
-    branches:
-    - '!zlib'
-  pull_request:
-    branches: [ master ]
+  repository_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  generate-matrix:
-    name: Generate matrix
-    runs-on: ubuntu-latest
-    outputs:
-      build_agents: ${{ steps.set_var.outputs.build_agents }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.1
-      - name: Set Var
-        id: set_var
-        run: |
-          content=`cat ./actions.json`
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          echo "::set-output name=build_agents::$content"
-      - name: Print Var
-        run: |
-          echo "${{toJson(fromJson(steps.set_var.outputs.build_agents))}}"
   build:
-    name: "Labels: ${{ join(matrix.run-on, ', ') }}"
+    name: "Labels: Test"
     env:
       JOB_NAME: ${{ github.repository }}
       BUILD_NUMBER: ${{ github.run_number }}
       CONAN_USER_HOME: ${{ github.workspace }}
-      CONANFILE: ${{ matrix.conanfile }}
-    needs: generate-matrix
-    strategy:
-      matrix: ${{fromJson(needs.generate-matrix.outputs.build_agents)}}
-    runs-on: ${{ matrix.run-on }}
+    runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
       - name: Conan Config
         run: |
-          conan config set storage.download_cache=${{ github.workspace }}
+          conan remote add conan_repo ${{ secrets.ARTIFACTORY_REPOSITORY }} -i 0 -f
+          conan user -p ${{ secrets.ARTIFACTORY_PASSWORD }} -r conan_repo ${{ secrets.ngrok_url }}
       - name: Build
         run: |
           conan create .
