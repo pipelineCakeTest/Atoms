@@ -17,7 +17,7 @@ jobs:
         id: time
         uses: nanzm/get-time-action@v1.1
         with:
-          timeZone: 8
+          timeZone: 1
           format: 'YYYY-MM-DDTHH:mm:ss.SSSZ'
       - name: Usage
         env:
