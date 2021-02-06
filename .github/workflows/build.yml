@@ -19,7 +19,7 @@ jobs:
       - name: Conan Config
         run: |
           conan remote add conan_repo ${{ secrets.ARTIFACTORY_REPOSITORY }} -i 0 -f
-          conan user -p ${{ secrets.ARTIFACTORY_PASSWORD }} -r conan_repo ${{ secrets.ngrok_url }}
+          conan user -p ${{ secrets.ARTIFACTORY_PASSWORD }} -r conan_repo ${{ secrets.ARTIFACTORY_USERNAME }}
       - name: Build
         run: |
           conan create .
