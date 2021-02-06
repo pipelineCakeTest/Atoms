@@ -48,8 +48,7 @@ jobs:
         env:
           FILE: ./build_info.json
           KEY: propreties
-          VALUE: '{"name":"${{ github.repository }}","number":"${{ github.run_number }}","started":"${{ steps.time.outputs.time }}"}'
-          parse_json: true
+          VALUE: '{"name":"${{ github.event.repository.name }}","number":"${{ github.run_number }}","started":"${{ steps.time.outputs.time }}"}'
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
