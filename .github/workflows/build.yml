@@ -1,4 +1,4 @@
-name: CI
+name: Integration Test
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -23,4 +23,4 @@ jobs:
       - name: Build
         run: |
           conan create .
-          conan upload Atoms/0.1.0@aev25/stable -r conan_repo --all
+          conan upload {{github.repository.name}}/0.1.0@aev25/stable -r conan_repo --all
