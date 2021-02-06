@@ -53,4 +53,5 @@ jobs:
         with:
           path: ./build_info.json
       - name: Upload build info
-        run: curl -X PUT -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} -H "Content-type: application/json" -T ./build_info.json "${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/build"
+        run: |
+          curl -X PUT -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} -H "Content-type: application/json" -T ./build_info.json "${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/build"
