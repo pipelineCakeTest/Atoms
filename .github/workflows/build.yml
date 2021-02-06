@@ -15,15 +15,14 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: |
-          echo "::set-output name=date::$(date +'yyyy-MM-dd'T'HH:mm:ss.SSSZ')"
-          echo "$date"
+        run: echo "::set-output name=date::$(date +'yyyy-MM-dd'T'HH:mm:ss.SSSZ')"
       - name: Get Conan
         uses: turtlebrowser/get-conan@v1.0
       - name: Checkout
         uses: actions/checkout@v2.3.1
       - name: Conan Config
         run: |
+          echo "${{steps.date.outputs.date}}"
           conan remote add conan_repo ${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/conan/conan-test -i 0 -f
           conan user -p ${{ secrets.ARTIFACTORY_PASSWORD }} -r conan_repo ${{ secrets.ARTIFACTORY_USERNAME }}
           conan config set artifact_property_build.name=${{ github.repository }}
