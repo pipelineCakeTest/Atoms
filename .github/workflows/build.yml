@@ -10,7 +10,7 @@ jobs:
       JOB_NAME: ${{ github.repository }}
       BUILD_NUMBER: ${{ github.run_number }}
       CONAN_USER_HOME: ${{ github.workspace }}
-      CONAN_TRACE_FILE : ${{ github.workspace }}/build_info.json
+      CONAN_TRACE_FILE : ${{ github.workspace }}/traces.log
     runs-on: ubuntu-latest
     steps:
       - name: Get Time
@@ -36,11 +36,10 @@ jobs:
           conan config set artifact_property_build.number=${{ github.run_number }}
           conan config set artifact_property_build.timestamp=${{ steps.time.outputs.time }}
       - name: Build
+        run: conan create .
+      - name: Upload
+        run: conan upload ${{ github.event.repository.name }}/0.1.0@aev25/stable -r conan_repo --all
+      - name: Build info
         run: |
-          conan create .
-          conan upload ${{ github.event.repository.name }}/0.1.0@aev25/stable -r conan_repo --all
-          conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.ARTIFACTORY_USERNAME }} --password ${{ secrets.ARTIFACTORY_PASSWORD }}
-          conan_build_info --v2 publish buildinfo.json --url http://localhost:8081/artifactory --user ${{ secrets.ARTIFACTORY_USERNAME }} --password ${{ secrets.ARTIFACTORY_PASSWORD }}
-      - name: Upload build informatio
-        run: |
-          curl -X PUT -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} -H "Content-type: application/json" -T /tmp/build_info.json "${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/build"
+          conan_build_info $CONAN_TRACE_FILE --output ./build_info.json
+          curl -X PUT -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} -H "Content-type: application/json" -T ./build_info.json "${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/build"
