@@ -46,8 +46,20 @@ jobs:
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           FILE: ./build_info.json
-          KEY: propreties
-          VALUE: '{"name":"${{ github.event.repository.name }}","number":"${{ github.run_number }}","started":"${{ steps.time.outputs.time }}"}'
+          KEY: name
+          VALUE: ${{ github.event.repository.name }}
+      - name: Update build info 2
+        uses: deef0000dragon1/json-edit-action/@v1
+        env:
+          FILE: ./build_info.json
+          KEY: started
+          VALUE: ${{ steps.time.outputs.time }}
+      - name: Update build info 3
+        uses: deef0000dragon1/json-edit-action/@v1
+        env:
+          FILE: ./build_info.json
+          KEY: number
+          VALUE: ${{ github.run_number }}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
