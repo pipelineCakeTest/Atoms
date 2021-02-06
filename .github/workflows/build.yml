@@ -23,7 +23,7 @@ jobs:
           conan user -p ${{ secrets.ARTIFACTORY_PASSWORD }} -r conan_repo ${{ secrets.ARTIFACTORY_USERNAME }}
           conan config set artifact_property_build.name=${{ github.repository }}
           conan config set artifact_property_build.number=${{ github.run_number }}
-          conan config set artifact_property_build.timestamp=${{ date "yyyy-MM-dd'T'HH:mm:ss.SSSZ" }}
+          conan config set artifact_property_build.timestamp=${{ date "+%Y-%m-%d-%H:%M" }}
       - name: Build
         run: |
           conan upload ${{ github.event.repository.name }}/0.1.0@aev25/stable -r conan_repo --all
