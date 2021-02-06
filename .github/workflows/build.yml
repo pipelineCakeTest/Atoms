@@ -37,6 +37,7 @@ jobs:
           conan config set artifact_property_build.timestamp=${{ steps.time.outputs.time }}
       - name: Build
         run: |
+          conan create .
           conan upload ${{ github.event.repository.name }}/0.1.0@aev25/stable -r conan_repo --all
           conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.ARTIFACTORY_USERNAME }} --password ${{ secrets.ARTIFACTORY_PASSWORD }}
           conan_build_info --v2 publish buildinfo.json --url http://localhost:8081/artifactory --user ${{ secrets.ARTIFACTORY_USERNAME }} --password ${{ secrets.ARTIFACTORY_PASSWORD }}
