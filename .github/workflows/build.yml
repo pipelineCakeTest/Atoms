@@ -1,3 +1,4 @@
+#curl -X PUT -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} -H "Content-type: application/json" -T ./build_info.json "${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/build"
 name: Integration Test
 on:
   repository_dispatch:
@@ -42,4 +43,7 @@ jobs:
       - name: Build info
         run: |
           conan_build_info $CONAN_TRACE_FILE --output ./build_info.json
-          curl -X PUT -u ${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }} -H "Content-type: application/json" -T ./build_info.json "${{ secrets.ARTIFACTORY_REPOSITORY }}/artifactory/api/build"
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: ./build_info.json
